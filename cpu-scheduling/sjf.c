@@ -22,6 +22,11 @@ int main()
     printf("<--SJF Scheduling Algorithm (Non-Preemptive)-->\n");
     printf("Enter Number of Processes: ");
     scanf("%d",&n);
+    if(n<1||n>10)
+    {
+        printf("This program supports 1 to 10 processes.\n");
+        return 0;
+    }
     for(int i=0;i<n;i++)
         p[i]=read(i+1);
     for(int i=0;i<n-1;i++)
@@ -42,7 +47,13 @@ int main()
     p[0].ct=p[0].it+p[0].bt;
     for(int i=1;i<n;i++)
     {
-        for(j=i+1,min=i;j<n&&p[j].at<=p[i-1].ct;j++)
+        /* If the CPU is idle, advance to the next arrival first, then choose the shortest
+           job among everything that has arrived by then. (Previously, after an idle gap the
+           next process in arrival order ran even if a shorter one arrived at the same time.) */
+        int t=p[i-1].ct;
+        if(p[i].at>t)
+            t=p[i].at;
+        for(j=i+1,min=i;j<n&&p[j].at<=t;j++)
             if(p[j].bt<p[min].bt)
                 min=j;
         temp=p[i];

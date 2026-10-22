@@ -22,6 +22,11 @@ int main()
     printf("FCFS Scheduling Algorithm (Non-Preemptive)\n");
     printf("Enter Number of Processes: ");
     scanf("%d",&n);
+    if(n<1||n>10)
+    {
+        printf("This program supports 1 to 10 processes.\n");
+        return 0;
+    }
     for(int i=0;i<n;i++)
         p[i]=read(i+1);
     for(int i=0;i<n-1;i++)
@@ -35,6 +40,8 @@ int main()
     printf("\nProcessNo\tAT\tBT\tCT\tTAT\tWT\tRT\n");
     for(int i=0;i<n;i++)
     {
+        if(ct<p[i].at)      /* CPU idle until this process arrives */
+            ct=p[i].at;
         ct+=p[i].bt;
 		p[i].ct=ct;
         p[i].tat=p[i].ct-p[i].at;

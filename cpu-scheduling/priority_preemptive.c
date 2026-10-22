@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define MAX 9999;
+#define MAX 9999
 struct proc
 {
     int no,at,bt,rt,ct,wt,tat,pri,temp;
@@ -19,7 +19,7 @@ struct proc read(int i)
     p.temp=p.pri;
     return p;
 }
-void main()
+int main()
 {
     int i,n,c,remaining,min_val,min_index;
     struct proc p[10],temp;
@@ -27,6 +27,11 @@ void main()
     printf("Smallest Priority First Scheduling Algorithm (Preemptive)\n");
     printf("Enter Number of Processes: ");
     scanf("%d",&n);
+    if(n<1||n>10)
+    {
+        printf("This program supports 1 to 10 processes.\n");
+        return 0;
+    }
     for(int i=0;i<n;i++)
         p[i]=read(i+1);
     remaining=n;
@@ -38,33 +43,30 @@ void main()
             p[j]=p[j+1];
             p[j+1]=temp;
             }
-    min_val=p[0].temp,min_index=0;
-	for(int j=0;j<n&&p[j].at<=p[0].at;j++)
-		if(p[j].temp<min_val)
-			min_val=p[j].temp,min_index=j;
-	i=min_index;
-	c=p[i].ct=p[i].at+1;
-	p[i].rt--;
-	if(p[i].rt==0)
-	{
-		p[i].temp=MAX;
-		remaining--;
-	}
-	while(remaining>0)
-	{
-		min_val=p[0].temp,min_index=0;
-    	for(int j=0;j<n&&p[j].at<=c;j++)
-    		if(p[j].temp<min_val)
-    			min_val=p[j].temp,min_index=j;
-    	i=min_index;
-		p[i].ct=c=c+1;
-		p[i].rt--;
-		if(p[i].rt==0)
-		{
-		    p[i].temp=MAX;
-		    remaining--;
-		}
-	}
+    /* Advance one time unit at a time, always running the arrived, unfinished process
+       with the smallest priority number. If nothing has arrived, the CPU idles. (The old
+       loop fell back to process 0 even after it had finished, so idle gaps gave wrong times.) */
+    c=p[0].at;
+    while(remaining>0)
+    {
+        min_val=MAX,min_index=-1;
+        for(int j=0;j<n;j++)
+            if(p[j].at<=c&&p[j].temp<min_val)
+                min_val=p[j].temp,min_index=j;
+        if(min_index==-1)
+        {
+            c++;
+            continue;
+        }
+        i=min_index;
+        p[i].ct=c=c+1;
+        p[i].rt--;
+        if(p[i].rt==0)
+        {
+            p[i].temp=MAX;
+            remaining--;
+        }
+    }
 		printf("\nProcessNo\tAT\tBT\tPri\tCT\tTAT\tWT\n");
     for(int i=0;i<n;i++)
     {

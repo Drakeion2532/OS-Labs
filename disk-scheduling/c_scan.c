@@ -16,7 +16,7 @@ void sortRequests(int requests[], int n) {
 }
 
 int main() {
-    int n, head, seekTime = 0;
+    int n, head, diskSize, seekTime = 0;
     
     printf("Enter the number of disk I/O requests: ");
     scanf("%d", &n);
@@ -30,6 +30,9 @@ int main() {
     
     printf("Enter the initial head position: ");
     scanf("%d", &head);
+
+    printf("Enter the disk size (number of cylinders, e.g. 200): ");
+    scanf("%d", &diskSize);
     
     sortRequests(requests, n);  // Sort the request array in ascending order
     
@@ -49,9 +52,13 @@ int main() {
         head = requests[i];
     }
     
-    // Then, it goes to the end of the disk in the opposite direction
-    if (currentIndex < n) {
-        seekTime += abs(0 - head); // Move the head to the beginning of the disk
+    // C-SCAN: if requests remain below the start position, run to the last cylinder,
+    // jump back to cylinder 0 and keep moving up. (The old version turned around at the
+    // last request instead of the disk end, and skipped this step entirely when every
+    // request was below the head, so those requests were never served.)
+    if (currentIndex > 0) {
+        seekTime += (diskSize - 1) - head;  // sweep to the end of the disk
+        seekTime += diskSize - 1;           // return jump to cylinder 0 (counted as head movement)
         head = 0;
         for (int i = 0; i < currentIndex; i++) {
             printf("%d -> ", requests[i]);
@@ -62,7 +69,7 @@ int main() {
     
     printf("\n");
     
-    printf("Total seek time: %d\n", seekTime);
+    printf("Total head movement: %d cylinders (includes the return jump to 0)\n", seekTime);
     
     return 0;
 }

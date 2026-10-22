@@ -1,5 +1,4 @@
  #include<stdio.h>
-#define MIN -9999;
 
 struct proc {
     int no, at, bt, ct, wt, tat, pri, status;
@@ -19,7 +18,7 @@ struct proc read(int i) {
     return p;
 }
 
-void main() {
+int main() {
     int n, l, ct = 0, remaining;
     struct proc p[10], temp;
     float avgtat = 0, avgwt = 0;
@@ -27,6 +26,11 @@ void main() {
     printf("<--Highest Priority First Scheduling Algorithm(Non-Preemptive)-->\n");
     printf("Enter Number of Processes: ");
     scanf("%d", &n);
+    if(n<1||n>10)
+    {
+        printf("This program supports 1 to 10 processes.\n");
+        return 0;
+    }
 
     for (int i = 0; i < n; i++)
         p[i] = read(i + 1);
@@ -39,16 +43,23 @@ void main() {
                 p[j + 1] = temp;
             }
 
-    p[9].pri = MIN;
     remaining = n;
 
     printf("\nProcessNo\tAT\tBT\tPri\tCT\tTAT\tWT\tRT\n");
 
     for (ct = p[0].at; remaining != 0;) {
-        l = 9;
+        /* Pick the arrived, unfinished process with the highest priority. The old code
+           used p[9] as a sentinel, which broke for 10 processes and "ran" the sentinel
+           whenever the CPU was idle. */
+        l = -1;
         for (int i = 0; i < n; i++)
-            if (p[i].at <= ct && p[i].status != 1 && p[i].pri > p[l].pri)
+            if (p[i].at <= ct && p[i].status != 1 && (l == -1 || p[i].pri > p[l].pri))
                 l = i;
+        if (l == -1) {          /* nothing has arrived yet: jump to the next arrival */
+            for (int i = 0; i < n; i++)
+                if (p[i].status != 1) { ct = p[i].at; break; }
+            continue;
+        }
 
         p[l].ct = ct = ct + p[l].bt;
         p[l].tat = p[l].ct - p[l].at;

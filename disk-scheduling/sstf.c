@@ -6,11 +6,12 @@ int absDiff(int a, int b) {
     return abs(a - b);
 }
 
-int findClosestRequest(int request[], int n, int head) {
+int findClosestRequest(int request[], int served[], int n, int head) {
     int minDiff = INT_MAX;
     int index = -1;
 
     for (int i = 0; i < n; i++) {
+        if (served[i]) continue;  /* skip requests already handled */
         int diff = absDiff(head, request[i]);
         if (diff < minDiff) {
             minDiff = diff;
@@ -23,10 +24,12 @@ int findClosestRequest(int request[], int n, int head) {
 
 void sstfDiskScheduling(int request[], int n, int head) {
     int totalSeekOperations = 0;
+    int served[n];
+    for (int i = 0; i < n; i++) served[i] = 0;
     printf("Sequence of disk access:");
 
     for (int i = 0; i < n; i++) {
-        int index = findClosestRequest(request, n, head);
+        int index = findClosestRequest(request, served, n, head);
         printf(" %d", request[index]);
 
         // Calculate the seek operations for each request
@@ -35,8 +38,9 @@ void sstfDiskScheduling(int request[], int n, int head) {
         // Update the head position
         head = request[index];
 
-        // Mark the processed request as -1 to avoid re-processing
-        request[index] = -1;
+        // Mark the request as served. (The old code overwrote it with -1, but the
+        // search did not skip -1, so it was picked again once the head was near 0.)
+        served[index] = 1;
     }
 
     printf("\nTotal number of seek operations: %d\n", totalSeekOperations);
