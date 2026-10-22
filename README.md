@@ -21,6 +21,18 @@ The classic operating-systems algorithms from my B.Tech OS lab (VIT Pune), writt
 
 Each scheduler prints the completion, turnaround and waiting time for every process, then the averages.
 
+## Where these ideas run in real systems
+
+These are textbook versions, but each one is the starting point for something a real operating system or service does every second:
+
+| Lab | In practice |
+|---|---|
+| CPU scheduling | Linux replaced its CFS scheduler with **EEVDF** in kernel 6.6. Both descend from fair-share ideas: round robin's time slices, plus a weighting that favours tasks that have had less CPU, much like priority aging. SRTF-style "shortest first" thinking appears in job schedulers and in request queues of web servers. |
+| Disk scheduling | Linux's block layer offers **mq-deadline**, **BFQ** and **Kyber** schedulers, or **none** for fast NVMe SSDs where seek time no longer matters. mq-deadline keeps requests sorted by position (the SCAN family) but adds deadlines so no request starves, the same starvation problem SSTF has. |
+| Page replacement | Linux approximates **LRU** with active/inactive page lists, and since kernel 6.1 can use **Multi-Gen LRU**. Databases and CDNs use LRU-like caches (often with frequency counts) for the same reason the LRU lab beats FIFO. **Optimal** can't be implemented (it needs the future) but is the yardstick the others are measured against. |
+| Banker's algorithm | General-purpose OSes don't use it, because processes rarely declare their maximum needs in advance. The idea of granting a request only if the system stays in a safe state survives in admission control for clusters, databases and real-time systems. |
+| Shell scripting | The same loops and tests automate log rotation, backups and deployment scripts on every Linux server. |
+
 ## Build, run and test
 
 ```bash
