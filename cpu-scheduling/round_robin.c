@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Shubhan Punde · https://github.com/Drakeion2532/OS-Labs · MIT licence · sp2532-c062ca2a33dc
 #include <stdio.h>
 
 /* Round Robin CPU scheduling with arrival times.

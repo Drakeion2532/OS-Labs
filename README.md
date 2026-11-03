@@ -82,3 +82,9 @@ Two earlier drafts that duplicated `sjf.c` and `round_robin.c` with incorrect lo
 ## Limits
 
 These are teaching programs: they read interactively from standard input, support up to 10 processes (50 for Round Robin and 10×10 matrices for the banker's algorithm), and use simple loops rather than optimised data structures.
+
+## Licence and credit
+
+MIT © 2026 [Shubhan Punde](https://github.com/Drakeion2532). You're welcome to learn from and reuse this code; the licence requires keeping the copyright notice, and presenting the project as your own work is not permitted. To cite it, use [CITATION.cff](CITATION.cff).
+
+<sub>Project ID: sp2532-c062ca2a33dc</sub>
