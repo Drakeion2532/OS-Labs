@@ -9,7 +9,3 @@ authors:
 repository-code: "https://github.com/Drakeion2532/OS-Labs"
 license: MIT
 date-released: "2026-11-03"
-identifiers:
-  - type: other
-    value: "sp2532-c062ca2a33dc"
-    description: "Project identifier"

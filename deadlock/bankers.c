@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Shubhan Punde · https://github.com/Drakeion2532/OS-Labs · MIT licence · sp2532-c062ca2a33dc
+// Copyright (c) 2026 Shubhan Punde · MIT licence
 #include<stdio.h>
 int i,j;
 int np,nr,max[10][10],allocation[10][10],need[10][10],avail[10];

@@ -1,4 +1,4 @@
-# Copyright (c) 2026 Shubhan Punde · https://github.com/Drakeion2532/OS-Labs · MIT licence · sp2532-c062ca2a33dc
+# Copyright (c) 2026 Shubhan Punde · MIT licence
 """Checks every lab program against known answers.
 
 * Textbook examples (Silberschatz, Operating System Concepts) for page replacement,
