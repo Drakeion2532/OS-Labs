@@ -85,7 +85,7 @@ These are teaching programs: they read interactively from standard input, suppor
 
 ## How this was built
 
-I designed the detection logic, threat model and evaluation, and used AI pair-programming (Claude Code) for implementation. Every number in this README was re-run and checked, and the test suite reproduces the key results.
+I designed the algorithms, data structures and test cases, and used AI pair-programming (Claude Code) for implementation. Every result in this README was re-run and checked, and the automated checks reproduce it.
 
 ## Licence
 
